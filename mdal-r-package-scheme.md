@@ -91,7 +91,7 @@ MDAL_MeshFaceIteratorH
 | Modern C++ | C++11+ | **C++11+ (cleaner)** | C only |
 | Vendor bundling | Complex | **Simple** | N/A |
 | External pointer handling | Good | **Good** | Manual |
-| Learning curve for you | Known | Similar to Rcpp | Higher |
+| Learning curve  | Known | Similar to Rcpp | Higher |
 | Future maintenance | Active | **Active, simpler deps** | Stable |
 
 **Rationale:**
@@ -105,7 +105,7 @@ MDAL_MeshFaceIteratorH
 While Rcpp Modules can auto-generate R6-like classes from C++, they:
 - Add significant compilation complexity
 - Make debugging harder
-- Tie you to Rcpp's class system rather than R's emerging standard (S7)
+- Tied Rcpp's class system rather than R's emerging standard (S7)
 
 ---
 
@@ -719,4 +719,4 @@ as_sf.MdalMesh <- function(x, ...) {
 5. **sf, rgl in Suggests** - optional heavyweight dependencies
 6. **Link to system MDAL** initially (via conda-forge), leverage rmdal0's configure pattern
 7. **Start minimal** - core read functionality first, then expand
-8. **Package name:** `rmdal` (builds on your prior rmdal0 work)
+8. **Package name:** `rmdal` 
