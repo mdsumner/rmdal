@@ -1,5 +1,5 @@
 Package: rmdal
-Title: What the Package Does (One Line, Title Case)
+Title: R Interface to the Mesh Data Abstraction Library (MDAL)
 Version: 0.0.0.9000
 Authors@R: 
     person("Michael", "Sumner", , "mdsumner@gmail.com", role = c("aut", "cre"),
@@ -8,10 +8,24 @@ Authors@R:
            role = "cph",
            comment = "MDAL library copyright holder")
     )
-Description: What the package does (one paragraph).
+Description: Provides bindings to the MDAL (Mesh Data Abstraction Library) for 
+    reading and writing unstructured mesh data. MDAL supports numerous formats 
+    used in hydrology, meteorology, and numerical modelling including 2DM, 
+    UGRID, NetCDF, GRIB, XMDF, Selafin, HEC-RAS, FLO-2D, and many others.
+    In future meshes may be converted to 'wk' geometry for interoperability with the 
+    'sf', 'geos', and 's2' ecosystems, or to 'rgl' mesh3d objects for 3D. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 URL: https://github.com/mdsumner/rmdal
 BugReports: https://github.com/mdsumner/rmdal/issues
+SystemRequirements: MDAL (>= 1.0.0): libmdal-dev (deb), mdal (conda-forge)
+Imports: 
+    S7,
+    wk
+LinkingTo: 
+    cpp11
+Suggests: 
+    rgl,
+    testthat (>= 3.0.0)
