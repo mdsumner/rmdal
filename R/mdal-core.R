@@ -16,6 +16,8 @@ mdal_version <- function() {
 #'
 #' @return Integer status code (0 = OK)
 #' @export
+#' @examples
+#' mdal_last_status()
 mdal_last_status <- function() {
   mdal_last_status_()
 }

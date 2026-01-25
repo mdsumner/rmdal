@@ -28,6 +28,22 @@ mdal_mesh_face_count_ <- function(mesh_xptr) {
   .Call(`_rmdal_mdal_mesh_face_count_`, mesh_xptr)
 }
 
+mdal_mesh_edge_count_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_edge_count_`, mesh_xptr)
+}
+
 mdal_mesh_projection_ <- function(mesh_xptr) {
   .Call(`_rmdal_mdal_mesh_projection_`, mesh_xptr)
+}
+
+mdal_mesh_driver_name_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_driver_name_`, mesh_xptr)
+}
+
+mdal_mesh_extent_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_extent_`, mesh_xptr)
+}
+
+mdal_mesh_dataset_group_count_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_dataset_group_count_`, mesh_xptr)
 }
