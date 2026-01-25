@@ -4,3 +4,4 @@
 ^data-raw$
 ^.Rhistory$
 ^README.Rmd$
+^\.github$

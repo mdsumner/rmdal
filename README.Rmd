@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # rmdal
  
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/mdsumner/rmdal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mdsumner/rmdal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 rmdal provides R bindings to the [MDAL (Mesh Data Abstraction Library)](https://www.mdal.xyz/), 
