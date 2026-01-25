@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# rmdal configure script
+# Finds MDAL library and generates src/Makevars
+
+echo "Configuring rmdal..."
+
+# Allow user overrides
+if test -z "$MDAL_CFLAGS" -a -z "$MDAL_LIBS"; then
+  # Try pkg-config first
+  if command -v pkg-config >/dev/null 2>&1; then
+    if pkg-config --exists mdal 2>/dev/null; then
+      MDAL_CFLAGS=$(pkg-config --cflags mdal)
+      MDAL_LIBS=$(pkg-config --libs mdal)
+      echo "Found MDAL via pkg-config"
+    fi
+  fi
+fi
+
+# If pkg-config didn't work, try standard locations
+if test -z "$MDAL_LIBS"; then
+  echo "pkg-config not available or MDAL not found, checking standard locations..."
+  
+  # Check for header
+  for dir in /usr/local/include /usr/include /opt/local/include $HOME/.local/include; do
+    if test -f "$dir/mdal.h"; then
+      MDAL_CFLAGS="-I$dir"
+      echo "Found mdal.h in $dir"
+      break
+    fi
+  done
+  
+  # Check for library
+  for dir in /usr/local/lib /usr/lib /usr/lib64 /opt/local/lib /usr/local/lib64 $HOME/.local/lib; do
+    if test -f "$dir/libmdal.so" -o -f "$dir/libmdal.dylib"; then
+      MDAL_LIBS="-L$dir -lmdal"
+      echo "Found libmdal in $dir"
+      break
+    fi
+  done
+  
+  # Fallback
+  if test -z "$MDAL_LIBS"; then
+    MDAL_LIBS="-lmdal"
+    echo "Using default -lmdal (hoping linker can find it)"
+  fi
+fi
+
+echo ""
+echo "Configuration:"
+echo "  MDAL_CFLAGS: $MDAL_CFLAGS"
+echo "  MDAL_LIBS:   $MDAL_LIBS"
+echo ""
+
+# Generate Makevars from template
+sed -e "s|@MDAL_CFLAGS@|$MDAL_CFLAGS|g" \
+    -e "s|@MDAL_LIBS@|$MDAL_LIBS|g" \
+    src/Makevars.in > src/Makevars
+
+if test $? -eq 0; then
+  echo "Created src/Makevars"
+else
+  echo "ERROR: Failed to create src/Makevars"
+  exit 1
+fi
+
+exit 0
