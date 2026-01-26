@@ -25,12 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install MDAL (conda fallback)
+- name: Install MDAL
         uses: conda-incubator/setup-miniconda@v3
         with:
           channels: conda-forge
 
-      - run: conda install -y mdal
+      - name: Install MDAL and set paths
+        shell: bash -el {0}
+        run: |
+          conda install -y mdal
+          echo "PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I$CONDA_PREFIX/include" >> $GITHUB_ENV
+          echo "LDFLAGS=-L$CONDA_PREFIX/lib" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 
