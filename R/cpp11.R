@@ -59,3 +59,23 @@ mdal_mesh_extent_ <- function(mesh_xptr) {
 mdal_mesh_dataset_group_count_ <- function(mesh_xptr) {
   .Call(`_rmdal_mdal_mesh_dataset_group_count_`, mesh_xptr)
 }
+
+mdal_dataset_group_name_ <- function(mesh_xptr, index) {
+  .Call(`_rmdal_mdal_dataset_group_name_`, mesh_xptr, index)
+}
+
+mdal_dataset_group_dataset_count_ <- function(mesh_xptr, group_index) {
+  .Call(`_rmdal_mdal_dataset_group_dataset_count_`, mesh_xptr, group_index)
+}
+
+mdal_dataset_group_location_ <- function(mesh_xptr, group_index) {
+  .Call(`_rmdal_mdal_dataset_group_location_`, mesh_xptr, group_index)
+}
+
+mdal_dataset_values_ <- function(mesh_xptr, group_index, dataset_index) {
+  .Call(`_rmdal_mdal_dataset_values_`, mesh_xptr, group_index, dataset_index)
+}
+
+mdal_dataset_time_ <- function(mesh_xptr, group_index, dataset_index) {
+  .Call(`_rmdal_mdal_dataset_time_`, mesh_xptr, group_index, dataset_index)
+}

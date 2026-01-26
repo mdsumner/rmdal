@@ -27,7 +27,10 @@
 #' mdal_mesh_vertex_count(mesh)
 #' mdal_mesh_face_count(mesh)
 mdal_load <- function(uri) {
-  uri <- normalizePath(uri, mustWork = TRUE)
+  ## classic gotcha
+  if (file.exists(uri)) {
+    uri <- normalizePath(uri, mustWork = TRUE)
+  }
   mdal_load_(uri)
 }
 

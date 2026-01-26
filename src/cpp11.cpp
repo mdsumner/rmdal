@@ -110,24 +110,64 @@ extern "C" SEXP _rmdal_mdal_mesh_dataset_group_count_(SEXP mesh_xptr) {
     return cpp11::as_sexp(mdal_mesh_dataset_group_count_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
   END_CPP11
 }
+// mdal_load.cpp
+std::string mdal_dataset_group_name_(sexp mesh_xptr, int index);
+extern "C" SEXP _rmdal_mdal_dataset_group_name_(SEXP mesh_xptr, SEXP index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_group_name_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(index)));
+  END_CPP11
+}
+// mdal_load.cpp
+int mdal_dataset_group_dataset_count_(sexp mesh_xptr, int group_index);
+extern "C" SEXP _rmdal_mdal_dataset_group_dataset_count_(SEXP mesh_xptr, SEXP group_index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_group_dataset_count_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index)));
+  END_CPP11
+}
+// mdal_load.cpp
+std::string mdal_dataset_group_location_(sexp mesh_xptr, int group_index);
+extern "C" SEXP _rmdal_mdal_dataset_group_location_(SEXP mesh_xptr, SEXP group_index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_group_location_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index)));
+  END_CPP11
+}
+// mdal_load.cpp
+doubles mdal_dataset_values_(sexp mesh_xptr, int group_index, int dataset_index);
+extern "C" SEXP _rmdal_mdal_dataset_values_(SEXP mesh_xptr, SEXP group_index, SEXP dataset_index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_values_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index), cpp11::as_cpp<cpp11::decay_t<int>>(dataset_index)));
+  END_CPP11
+}
+// mdal_load.cpp
+double mdal_dataset_time_(sexp mesh_xptr, int group_index, int dataset_index);
+extern "C" SEXP _rmdal_mdal_dataset_time_(SEXP mesh_xptr, SEXP group_index, SEXP dataset_index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_time_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index), cpp11::as_cpp<cpp11::decay_t<int>>(dataset_index)));
+  END_CPP11
+}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_rmdal_mdal_driver_count_",             (DL_FUNC) &_rmdal_mdal_driver_count_,             0},
-    {"_rmdal_mdal_drivers_",                  (DL_FUNC) &_rmdal_mdal_drivers_,                  0},
-    {"_rmdal_mdal_last_status_",              (DL_FUNC) &_rmdal_mdal_last_status_,              0},
-    {"_rmdal_mdal_load_",                     (DL_FUNC) &_rmdal_mdal_load_,                     1},
-    {"_rmdal_mdal_mesh_dataset_group_count_", (DL_FUNC) &_rmdal_mdal_mesh_dataset_group_count_, 1},
-    {"_rmdal_mdal_mesh_driver_name_",         (DL_FUNC) &_rmdal_mdal_mesh_driver_name_,         1},
-    {"_rmdal_mdal_mesh_edge_count_",          (DL_FUNC) &_rmdal_mdal_mesh_edge_count_,          1},
-    {"_rmdal_mdal_mesh_edges_",               (DL_FUNC) &_rmdal_mdal_mesh_edges_,               1},
-    {"_rmdal_mdal_mesh_extent_",              (DL_FUNC) &_rmdal_mdal_mesh_extent_,              1},
-    {"_rmdal_mdal_mesh_face_count_",          (DL_FUNC) &_rmdal_mdal_mesh_face_count_,          1},
-    {"_rmdal_mdal_mesh_faces_",               (DL_FUNC) &_rmdal_mdal_mesh_faces_,               1},
-    {"_rmdal_mdal_mesh_projection_",          (DL_FUNC) &_rmdal_mdal_mesh_projection_,          1},
-    {"_rmdal_mdal_mesh_vertex_count_",        (DL_FUNC) &_rmdal_mdal_mesh_vertex_count_,        1},
-    {"_rmdal_mdal_mesh_vertices_",            (DL_FUNC) &_rmdal_mdal_mesh_vertices_,            1},
-    {"_rmdal_mdal_version_",                  (DL_FUNC) &_rmdal_mdal_version_,                  0},
+    {"_rmdal_mdal_dataset_group_dataset_count_", (DL_FUNC) &_rmdal_mdal_dataset_group_dataset_count_, 2},
+    {"_rmdal_mdal_dataset_group_location_",      (DL_FUNC) &_rmdal_mdal_dataset_group_location_,      2},
+    {"_rmdal_mdal_dataset_group_name_",          (DL_FUNC) &_rmdal_mdal_dataset_group_name_,          2},
+    {"_rmdal_mdal_dataset_time_",                (DL_FUNC) &_rmdal_mdal_dataset_time_,                3},
+    {"_rmdal_mdal_dataset_values_",              (DL_FUNC) &_rmdal_mdal_dataset_values_,              3},
+    {"_rmdal_mdal_driver_count_",                (DL_FUNC) &_rmdal_mdal_driver_count_,                0},
+    {"_rmdal_mdal_drivers_",                     (DL_FUNC) &_rmdal_mdal_drivers_,                     0},
+    {"_rmdal_mdal_last_status_",                 (DL_FUNC) &_rmdal_mdal_last_status_,                 0},
+    {"_rmdal_mdal_load_",                        (DL_FUNC) &_rmdal_mdal_load_,                        1},
+    {"_rmdal_mdal_mesh_dataset_group_count_",    (DL_FUNC) &_rmdal_mdal_mesh_dataset_group_count_,    1},
+    {"_rmdal_mdal_mesh_driver_name_",            (DL_FUNC) &_rmdal_mdal_mesh_driver_name_,            1},
+    {"_rmdal_mdal_mesh_edge_count_",             (DL_FUNC) &_rmdal_mdal_mesh_edge_count_,             1},
+    {"_rmdal_mdal_mesh_edges_",                  (DL_FUNC) &_rmdal_mdal_mesh_edges_,                  1},
+    {"_rmdal_mdal_mesh_extent_",                 (DL_FUNC) &_rmdal_mdal_mesh_extent_,                 1},
+    {"_rmdal_mdal_mesh_face_count_",             (DL_FUNC) &_rmdal_mdal_mesh_face_count_,             1},
+    {"_rmdal_mdal_mesh_faces_",                  (DL_FUNC) &_rmdal_mdal_mesh_faces_,                  1},
+    {"_rmdal_mdal_mesh_projection_",             (DL_FUNC) &_rmdal_mdal_mesh_projection_,             1},
+    {"_rmdal_mdal_mesh_vertex_count_",           (DL_FUNC) &_rmdal_mdal_mesh_vertex_count_,           1},
+    {"_rmdal_mdal_mesh_vertices_",               (DL_FUNC) &_rmdal_mdal_mesh_vertices_,               1},
+    {"_rmdal_mdal_version_",                     (DL_FUNC) &_rmdal_mdal_version_,                     0},
     {NULL, NULL, 0}
 };
 }

@@ -1,8 +1,28 @@
-# rmdal 0.1.0
+# rmdal 
+
+## rmdal 0.1.0
 
 Initial development release with core MDAL bindings.
 
 ### New features
+ 
+* `mdal_dataset_group_name()` returns the name of a dataset group (e.
+g., 
+  "Sea Ice Concentration", "Depth", "Velocity").
+
+* `mdal_dataset_group_dataset_count()` returns the number of datasets 
+  (timesteps) in a group.
+
+* `mdal_dataset_group_location()` returns where values are stored: 
+  "vertices", "faces", "edges", or "volumes".
+
+* `mdal_dataset_group_is_scalar()` checks if data is scalar (TRUE) or 
+  vector with x,y components (FALSE).
+
+* `mdal_dataset_values()` extracts numeric values from a dataset. Combined
+  with `mdal_as_mesh3d()`, enables 3D visualization of temporal/thematic data.
+
+* `mdal_dataset_time()` returns the time value for a dataset within a group.
 
 * `mdal_mesh_vertices()` returns all vertex coordinates as an Nx3 matrix.
 
@@ -11,10 +31,7 @@ Initial development release with core MDAL bindings.
 
 * `mdal_mesh_edges()` returns 1D edge elements as an Nx2 matrix of vertex indices.
 
-* `mdal_as_mesh3d()
-` converts MDAL meshes to rgl-compatible mesh3d objects:
-  
-
+* `mdal_as_mesh3d()` converts MDAL meshes to rgl-compatible mesh3d objects:
   - `type = "wire"` (default) creates wireframe from face boundaries. Works for 
     any topology including mixed faces and n-gons.
   - `type = "solid"` creates filled mesh for pure triangle or quad meshes.

@@ -1,5 +1,5 @@
 # Test file paths helper
-mdal_test_file <- function(path) {
+test_file <- function(path) {
   system.file(file.path("extdata/MDAL/tests/data", path),
               package = "rmdal", mustWork = TRUE)
 }
@@ -31,7 +31,7 @@ test_that("mdal_drivers returns a data frame", {
 # ============================================================================
 
 test_that("load 2DM with mixed triangles and quads", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
 
   expect_equal(mdal_mesh_vertex_count(mesh), 5)
   expect_equal(mdal_mesh_face_count(mesh), 2)
@@ -46,7 +46,7 @@ test_that("load 2DM with mixed triangles and quads", {
 })
 
 test_that("load 2DM with pure 1D edges (lines)", {
-  mesh <- mdal_load(mdal_test_file("2dm/lines.2dm"))
+  mesh <- mdal_load(test_file("2dm/lines.2dm"))
 
   expect_equal(mdal_mesh_face_count(mesh), 0)
   expect_equal(mdal_mesh_edge_count(mesh), 3)
@@ -56,11 +56,11 @@ test_that("load 2DM with pure 1D edges (lines)", {
   edges <- mdal_mesh_edges(mesh)
   expect_equal(nrow(edges), 3)
   expect_equal(ncol(edges), 2)
-  #expect_equal(colnames(edges), c("start", "end"))
+  expect_equal(colnames(edges), c("start", "end"))
 })
 
 test_that("load 2DM with hexagonal faces", {
-  mesh <- mdal_load(mdal_test_file("2dm/triangleE6T.2dm"))
+  mesh <- mdal_load(test_file("2dm/triangleE6T.2dm"))
 
   faces <- mdal_mesh_faces(mesh)
   sizes <- unique(lengths(faces))
@@ -68,7 +68,7 @@ test_that("load 2DM with hexagonal faces", {
 })
 
 test_that("load 2DM with mixed faces and edges", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_line.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_line.2dm"))
 
   expect_gt(mdal_mesh_face_count(mesh), 0)
   expect_gt(mdal_mesh_edge_count(mesh), 0)
@@ -80,7 +80,7 @@ test_that("load 2DM with mixed faces and edges", {
 # ============================================================================
 
 test_that("load Mike21 mesh with CRS", {
-  mesh <- mdal_load(mdal_test_file("mike21/small.mesh"))
+  mesh <- mdal_load(test_file("mike21/small.mesh"))
 
   expect_equal(mdal_mesh_driver_name(mesh), "Mike21")
   expect_gt(mdal_mesh_vertex_count(mesh), 0)
@@ -92,21 +92,21 @@ test_that("load Mike21 mesh with CRS", {
 })
 
 test_that("load PLY mesh with multiple dataset groups", {
-  mesh <- mdal_load(mdal_test_file("ply/all_features.ply"))
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
 
   expect_equal(mdal_mesh_driver_name(mesh), "PLY")
   expect_gt(mdal_mesh_dataset_group_count(mesh), 5)
 })
 
 test_that("load UGRID NetCDF mesh", {
-  mesh <- mdal_load(mdal_test_file("ugrid/time_integer/simple_time_integer.nc"))
+  mesh <- mdal_load(test_file("ugrid/time_integer/simple_time_integer.nc"))
 
   expect_equal(mdal_mesh_driver_name(mesh), "Ugrid")
   expect_gt(mdal_mesh_vertex_count(mesh), 0)
 })
 
 test_that("load ESRI TIN (multi-file format)", {
-  mesh <- mdal_load(mdal_test_file("esri_tin/mesh_simple/tdenv9.adf"))
+  mesh <- mdal_load(test_file("esri_tin/mesh_simple/tdenv9.adf"))
 
   expect_equal(mdal_mesh_driver_name(mesh), "ESRI_TIN")
   expect_equal(mdal_mesh_vertex_count(mesh), 8)
@@ -118,17 +118,17 @@ test_that("load ESRI TIN (multi-file format)", {
 # ============================================================================
 
 test_that("mdal_mesh_vertices returns correct matrix", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
   v <- mdal_mesh_vertices(mesh)
 
   expect_true(is.matrix(v))
   expect_equal(nrow(v), 5)
   expect_equal(ncol(v), 3)
-  #expect_equal(colnames(v), c("x", "y", "z"))
+  expect_equal(colnames(v), c("x", "y", "z"))
 })
 
 test_that("mdal_mesh_faces returns list of indices", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
   f <- mdal_mesh_faces(mesh)
 
   expect_type(f, "list")
@@ -141,12 +141,12 @@ test_that("mdal_mesh_faces returns list of indices", {
 })
 
 test_that("mdal_mesh_edges returns correct matrix for 1D mesh", {
-  mesh <- mdal_load(mdal_test_file("2dm/lines.2dm"))
+  mesh <- mdal_load(test_file("2dm/lines.2dm"))
   e <- mdal_mesh_edges(mesh)
 
   expect_true(is.matrix(e))
   expect_equal(ncol(e), 2)
-  #expect_equal(colnames(e), c("start", "end"))
+  expect_equal(colnames(e), c("start", "end"))
 
   # All indices should be valid
   nv <- mdal_mesh_vertex_count(mesh)
@@ -155,7 +155,7 @@ test_that("mdal_mesh_edges returns correct matrix for 1D mesh", {
 })
 
 test_that("mdal_mesh_edges returns empty matrix for 2D-only mesh", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
   e <- mdal_mesh_edges(mesh)
 
   expect_true(is.matrix(e))
@@ -163,7 +163,7 @@ test_that("mdal_mesh_edges returns empty matrix for 2D-only mesh", {
 })
 
 test_that("mdal_mesh_extent returns valid bbox", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
   ext <- mdal_mesh_extent(mesh)
 
   expect_type(ext, "list")
@@ -177,7 +177,7 @@ test_that("mdal_mesh_extent returns valid bbox", {
 # ============================================================================
 
 test_that("mdal_as_mesh3d wireframe works for mixed topology", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
   m3d <- mdal_as_mesh3d(mesh, type = "wire")
 
   expect_s3_class(m3d, "mesh3d")
@@ -197,7 +197,7 @@ test_that("mdal_as_mesh3d wireframe works for mixed topology", {
 })
 
 test_that("mdal_as_mesh3d wireframe works for hexagons", {
-  mesh <- mdal_load(mdal_test_file("2dm/triangleE6T.2dm"))
+  mesh <- mdal_load(test_file("2dm/triangleE6T.2dm"))
   m3d <- mdal_as_mesh3d(mesh, type = "wire")
 
   expect_s3_class(m3d, "mesh3d")
@@ -205,7 +205,7 @@ test_that("mdal_as_mesh3d wireframe works for hexagons", {
 })
 
 test_that("mdal_as_mesh3d wireframe includes 1D edges", {
-  mesh <- mdal_load(mdal_test_file("2dm/lines.2dm"))
+  mesh <- mdal_load(test_file("2dm/lines.2dm"))
   m3d <- mdal_as_mesh3d(mesh, type = "wire")
 
   expect_s3_class(m3d, "mesh3d")
@@ -215,20 +215,20 @@ test_that("mdal_as_mesh3d wireframe includes 1D edges", {
 })
 
 test_that("mdal_as_mesh3d solid fails for mixed topology", {
-  mesh <- mdal_load(mdal_test_file("2dm/quad_and_triangle.2dm"))
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
 
   expect_error(mdal_as_mesh3d(mesh, type = "solid"),
                "uniform face sizes")
 })
 
 test_that("mdal_as_mesh3d solid fails for hexagons", {
-  mesh <- mdal_load(mdal_test_file("2dm/triangleE6T.2dm"))
+  mesh <- mdal_load(test_file("2dm/triangleE6T.2dm"))
 
   expect_error(mdal_as_mesh3d(mesh, type = "solid"))
 })
 
 test_that("mdal_as_mesh3d solid works for pure triangles", {
-  mesh <- mdal_load(mdal_test_file("esri_tin/mesh_simple/tdenv9.adf"))
+  mesh <- mdal_load(test_file("esri_tin/mesh_simple/tdenv9.adf"))
 
   faces <- mdal_mesh_faces(mesh)
   sizes <- unique(lengths(faces))
@@ -256,3 +256,93 @@ test_that("mesh functions fail gracefully with invalid input",
             expect_error(mdal_mesh_vertex_count(NULL))
             expect_error(mdal_mesh_faces(NULL))
           })
+
+# ============================================================================
+# Dataset group and value tests
+# ============================================================================
+
+test_that("dataset group functions work for PLY with multiple groups", {
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
+
+  n_groups <- mdal_mesh_dataset_group_count(mesh)
+  expect_gt(n_groups, 1)
+
+  # First group should have a name
+  name <- mdal_dataset_group_name(mesh, 0)
+  expect_type(name, "character")
+  expect_gt(nchar(name), 0)
+
+  # Should have at least one dataset
+  n_datasets <- mdal_dataset_group_dataset_count(mesh, 0)
+  expect_gte(n_datasets, 1)
+
+  # Location should be valid
+  loc <- mdal_dataset_group_location(mesh, 0)
+  expect_true(loc %in% c("vertices", "faces", "edges", "volumes", "unknown"))
+})
+
+test_that("dataset values extraction works", {
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
+
+  # Get values from first group, first dataset
+  vals <- mdal_dataset_values(mesh, group = 0, dataset = 0)
+
+  expect_type(vals, "double")
+  expect_gt(length(vals), 0)
+
+  # Length should match vertex or face count depending on location
+  loc <- mdal_dataset_group_location(mesh, 0)
+  if (loc == "vertices") {
+    expect_equal(length(vals), mdal_mesh_vertex_count(mesh))
+  } else if (loc == "faces") {
+    expect_equal(length(vals), mdal_mesh_face_count(mesh))
+  }
+})
+
+test_that("dataset time retrieval works", {
+  mesh <- mdal_load(test_file("ugrid/time_integer/simple_time_integer.nc"))
+
+  n_groups <- mdal_mesh_dataset_group_count(mesh)
+
+  if (n_groups > 0) {
+    time_val <- mdal_dataset_time(mesh, group = 0, dataset = 0)
+    expect_type(time_val, "double")
+  }
+})
+
+test_that("is_scalar check works", {
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
+
+  is_scalar <- mdal_dataset_group_is_scalar(mesh, 0)
+  expect_type(is_scalar, "logical")
+})
+
+test_that("dataset functions handle invalid indices gracefully", {
+  mesh <- mdal_load(test_file("2dm/quad_and_triangle.2dm"))
+
+  # Invalid group index should return empty/error
+  expect_equal(mdal_dataset_group_name(mesh, 999), "")
+  expect_equal(mdal_dataset_group_dataset_count(mesh, 999), 0)
+})
+
+test_that("mesh3d with dataset values integration works", {
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
+
+  n_groups <- mdal_mesh_dataset_group_count(mesh)
+  if (n_groups > 0) {
+    loc <- mdal_dataset_group_location(mesh, 0)
+
+    # Only test if data is on vertices (can set as z)
+    if (loc == "vertices") {
+      m3d <- mdal_as_mesh3d(mesh, type = "wire")
+      vals <- mdal_dataset_values(mesh, 0, 0)
+
+      # Should be able to use values as z coordinate
+      expect_equal(length(vals), ncol(m3d$vb))
+
+      # Assign values to z (row 3)
+      m3d$vb[3, ] <- vals
+      expect_equal(m3d$vb[3, ], vals)
+    }
+  }
+})
