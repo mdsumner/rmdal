@@ -18,14 +18,13 @@ that define a face. Faces may have varying numbers of vertices
 Returns all face definitions from a mesh as a list of vertex index vectors.
 }
 \examples{
-\dontrun{
-mesh <- mdal_load("mesh.2dm")
-f <- mdal_mesh_faces(mesh)
-f[[1]]  # First face vertex indices
-#> [1] 1 2 5 4
-lengths(f)  # Vertices per face
-#> [1] 4 4 3 3
-}
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
+faces <- mdal_mesh_faces(mesh)
+length(faces)
+faces[[1]]  # First face vertex indices
+lengths(faces)  # Vertices per face (mixed 3 and 4)
 }
 \seealso{
 \code{\link[=mdal_load]{mdal_load()}}, \code{\link[=mdal_mesh_vertices]{mdal_mesh_vertices()}}, \code{\link[=mdal_mesh_edges]{mdal_mesh_edges()}}

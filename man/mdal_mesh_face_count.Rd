@@ -16,8 +16,9 @@ Integer count of faces.
 Returns the number of faces in a loaded mesh.
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_face_count(mesh)
 }
 \seealso{

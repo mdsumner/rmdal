@@ -18,8 +18,10 @@ Returns the coordinate reference system (projection) string for a mesh,
 if defined.
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# Mike21 mesh has CRS defined
+f <- system.file("extdata/MDAL/tests/data/mike21/small.mesh",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_projection(mesh)
 }
 \seealso{

@@ -48,20 +48,20 @@ all quads (4 vertices). Mixed meshes or faces with more than 4 vertices
 will raise an error.
 }
 \examples{
-\dontrun{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# Wireframe works for any topology (mixed tri+quad)
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 m3d <- mdal_as_mesh3d(mesh)
+class(m3d)
+dim(m3d$vb)  # 4 x nvertices (homogeneous coords)
+dim(m3d$is)  # 2 x nedges (segment indices)
 
-# Visualize with rgl (if installed)
-if (requireNamespace("rgl", quietly = TRUE)) {
-  rgl::wire3d(m3d)
-}
-
-# Or solid rendering for triangle meshes
-m3d_solid <- mdal_as_mesh3d(mesh, type = "solid")
-rgl::shade3d(m3d_solid)
-}
+# Hexagonal faces - only wireframe works
+f_hex <- system.file("extdata/MDAL/tests/data/2dm/triangleE6T.2dm",
+                     package = "rmdal", mustWork = TRUE)
+mesh_hex <- mdal_load(f_hex)
+m3d_hex <- mdal_as_mesh3d(mesh_hex, type = "wire")
 }
 \seealso{
 \code{\link[=mdal_load]{mdal_load()}}, \code{\link[=mdal_mesh_vertices]{mdal_mesh_vertices()}}, \code{\link[=mdal_mesh_faces]{mdal_mesh_faces()}}

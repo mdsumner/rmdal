@@ -17,8 +17,9 @@ Values may be \code{NaN} if extent cannot be determined.
 Returns the bounding box extent of the mesh in its native projection.
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_extent(mesh)
 }
 \seealso{

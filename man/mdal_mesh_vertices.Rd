@@ -16,14 +16,12 @@ Numeric matrix with N rows (vertices) and 3 columns (x, y, z).
 Returns all vertex coordinates from a mesh as an Nx3 matrix.
 }
 \examples{
-\dontrun{
-mesh <- mdal_load("mesh.2dm")
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 v <- mdal_mesh_vertices(mesh)
+dim(v)
 head(v)
-#>          x        y z
-#> [1,] 0.000    0.000 0
-#> [2,] 1.000    0.000 0
-}
 }
 \seealso{
 \code{\link[=mdal_load]{mdal_load()}}, \code{\link[=mdal_mesh_faces]{mdal_mesh_faces()}}, \code{\link[=mdal_mesh_edges]{mdal_mesh_edges()}}

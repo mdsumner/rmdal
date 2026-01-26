@@ -40,20 +40,20 @@
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_vertices()], [mdal_mesh_faces()]
 #' @examples
-#' \dontrun{
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' # Wireframe works for any topology (mixed tri+quad)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' m3d <- mdal_as_mesh3d(mesh)
+#' class(m3d)
+#' dim(m3d$vb)  # 4 x nvertices (homogeneous coords)
+#' dim(m3d$is)  # 2 x nedges (segment indices)
 #'
-#' # Visualize with rgl (if installed)
-#' if (requireNamespace("rgl", quietly = TRUE)) {
-#'   rgl::wire3d(m3d)
-#' }
-#'
-#' # Or solid rendering for triangle meshes
-#' m3d_solid <- mdal_as_mesh3d(mesh, type = "solid")
-#' rgl::shade3d(m3d_solid)
-#' }
+#' # Hexagonal faces - only wireframe works
+#' f_hex <- system.file("extdata/MDAL/tests/data/2dm/triangleE6T.2dm",
+#'                      package = "rmdal", mustWork = TRUE)
+#' mesh_hex <- mdal_load(f_hex)
+#' m3d_hex <- mdal_as_mesh3d(mesh_hex, type = "wire")
 mdal_as_mesh3d <- function(mesh, type = c("wire", "solid")) {
   type <- match.arg(type)
 
@@ -197,14 +197,12 @@ extract_face_edges <- function(faces) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_faces()], [mdal_mesh_edges()]
 #' @examples
-#' \dontrun{
-#' mesh <- mdal_load("mesh.2dm")
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' v <- mdal_mesh_vertices(mesh)
+#' dim(v)
 #' head(v)
-#' #>          x        y z
-#' #> [1,] 0.000    0.000 0
-#' #> [2,] 1.000    0.000 0
-#' }
 mdal_mesh_vertices <- function(mesh) {
   mdal_mesh_vertices_(mesh)
 }
@@ -220,14 +218,13 @@ mdal_mesh_vertices <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_vertices()], [mdal_mesh_edges()]
 #' @examples
-#' \dontrun{
-#' mesh <- mdal_load("mesh.2dm")
-#' f <- mdal_mesh_faces(mesh)
-#' f[[1]]  # First face vertex indices
-#' #> [1] 1 2 5 4
-#' lengths(f)  # Vertices per face
-#' #> [1] 4 4 3 3
-#' }
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
+#' faces <- mdal_mesh_faces(mesh)
+#' length(faces)
+#' faces[[1]]  # First face vertex indices
+#' lengths(faces)  # Vertices per face (mixed 3 and 4)
 mdal_mesh_faces <- function(mesh) {
   mdal_mesh_faces_(mesh)
 }
@@ -244,11 +241,13 @@ mdal_mesh_faces <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_vertices()], [mdal_mesh_faces()]
 #' @examples
-#' \dontrun{
-#' mesh <- mdal_load("mesh_with_1d.nc")
+#' # 1D mesh with edges
+#' f <- system.file("extdata/MDAL/tests/data/2dm/lines.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' e <- mdal_mesh_edges(mesh)
 #' nrow(e)  # Number of 1D edges
-#' }
+#' e  # Start and end vertex indices
 mdal_mesh_edges <- function(mesh) {
   mdal_mesh_edges_(mesh)
 }

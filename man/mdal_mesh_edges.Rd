@@ -19,11 +19,13 @@ boundaries - they represent explicit 1D mesh elements (e.g., channels,
 rivers in 1D/2D coupled models).
 }
 \examples{
-\dontrun{
-mesh <- mdal_load("mesh_with_1d.nc")
+# 1D mesh with edges
+f <- system.file("extdata/MDAL/tests/data/2dm/lines.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 e <- mdal_mesh_edges(mesh)
 nrow(e)  # Number of 1D edges
-}
+e  # Start and end vertex indices
 }
 \seealso{
 \code{\link[=mdal_load]{mdal_load()}}, \code{\link[=mdal_mesh_vertices]{mdal_mesh_vertices()}}, \code{\link[=mdal_mesh_faces]{mdal_mesh_faces()}}

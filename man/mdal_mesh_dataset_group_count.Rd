@@ -17,8 +17,10 @@ Returns the number of dataset groups in a mesh. Dataset groups contain
 temporal or thematic data (e.g., "Depth", "Velocity").
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# PLY file with multiple dataset groups
+f <- system.file("extdata/MDAL/tests/data/ply/all_features.ply",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_dataset_group_count(mesh)
 }
 \seealso{

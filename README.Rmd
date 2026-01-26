@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 # rmdal
  
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/mdsumner/rmdal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mdsumner/rmdal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 rmdal provides R bindings to the [MDAL (Mesh Data Abstraction Library)](https://www.mdal.xyz/), 
@@ -26,6 +25,8 @@ hydrology, meteorology, and numerical modelling.
 MDAL is an [OSGeo Community Project](https://www.osgeo.org/projects/mdal/) developed by 
 [Lutra Consulting](https://www.lutraconsulting.co.uk/) and provides the mesh layer 
 functionality in QGIS.
+
+Currently this has only been run on Linux (ubuntu, 24.04). 
 
 ## Supported Formats
 
@@ -45,7 +46,7 @@ Use `mdal_drivers()` to see all available drivers and their capabilities.
 
 ## Installation
 
-rmdal requires the MDAL library to be installed on your system.
+rmdal requires the MDAL library to be installed. 
 
 ### Install MDAL
 
@@ -74,44 +75,71 @@ pak::pak("mdsumner/rmdal")
 
 ## Usage
 
-```{r example, eval = FALSE}
+```{r example}
 library(rmdal)
 
 # Check MDAL version
 mdal_version()
 
 # List available drivers
-mdal_drivers()
+mdal_drivers()[, c("name", "long_name", "can_read_mesh")]
 
-# Load a mesh
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# Load a mesh (mixed triangles and quads)
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 
 # Query mesh properties
 mdal_mesh_vertex_count(mesh)
 mdal_mesh_face_count(mesh)
-mdal_mesh_projection(mesh)
+mdal_mesh_driver_name(mesh)
+
+# Extract geometry
+v <- mdal_mesh_vertices(mesh)
+head(v)
+
+faces <- mdal_mesh_faces(mesh)
+lengths(faces)  # Mixed: 4 vertices (quad) + 3 vertices (triangle)
+
+# Convert to rgl-compatible mesh3d (wireframe)
+m3d <- mdal_as_mesh3d(mesh, type = "wire")
+class(m3d)
+dim(m3d$vb)  # 4 x n vertices (homogeneous coords)
+dim(m3d$is)  # 2 x n segments
 ```
 
-```{r real-example, echo = FALSE, eval = TRUE}
-library(rmdal)
-mdal_version()
+```{r example-1d}
+# 1D mesh with edges (lines, no faces)
+f_1d <- system.file("extdata/MDAL/tests/data/2dm/lines.2dm",
+                    package = "rmdal", mustWork = TRUE)
+mesh_1d <- mdal_load(f_1d)
+mdal_mesh_edge_count(mesh_1d)
+mdal_mesh_face_count(mesh_1d)
 ```
 
-```{r drivers, eval = TRUE}
-# Available drivers
-mdal_drivers()[, c("name", "long_name", "can_read_mesh")]
+```{r example-crs}
+# Mesh with CRS
+f_crs <- system.file("extdata/MDAL/tests/data/mike21/small.mesh",
+                     package = "rmdal", mustWork = TRUE)
+mesh_crs <- mdal_load(f_crs)
+mdal_mesh_projection(mesh_crs)
 ```
 
 ## Roadmap
 
-rmdal is under active development. Planned features include:
+rmdal is under active development.
 
-- [ ] Vertex, face, and edge geometry extraction
+### Implemented
+
+- [x] Vertex, face, and edge geometry extraction
+- [x] Conversion to rgl mesh3d format (wireframe and solid)
+
+### Planned
+
 - [ ] Dataset group and dataset access (temporal data)
+- [ ] Dataset values to mesh3d colors
 - [ ] S7 classes for mesh objects
 - [ ] Integration with wk for geometry interchange
-- [ ] Integration with rgl for 3D visualization
 - [ ] Mesh creation and writing
 
 ## Data Model
@@ -138,8 +166,8 @@ provide targeted conversions for interoperability.
 - [MDAL](https://www.mdal.xyz/) - The underlying C++ library
 - [QGIS](https://qgis.org/) - Uses MDAL for mesh layer support
 - [Crayfish](https://plugins.qgis.org/plugins/crayfish/) - QGIS plugin for mesh visualization
-- [anglr](https://github.com/hypertidy/anglr/) - R package Mesh creation and topology for spatial data
-- [rgl](https://github.com/dmurdoch/rgl/) - R package 3D visualization system based on OpenGL.
+- [anglr](https://github.com/hypertidy/anglr/) - R package for mesh creation and topology
+- [rgl](https://github.com/dmurdoch/rgl/) - R package for 3D visualization (mesh3d format)
 
 ## License
 

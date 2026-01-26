@@ -1,3 +1,6 @@
+#' @useDynLib rmdal, .registration = TRUE
+#' @keywords internal
+"_PACKAGE"
 
 #' MDAL Version
 #'
@@ -69,13 +72,12 @@ mdal_drivers <- function() {
 #'
 #' @export
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' # Load a mesh with mixed triangles and quads
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_vertex_count(mesh)
 #' mdal_mesh_face_count(mesh)
-#' mdal_mesh_projection(mesh)
-
 mdal_load <- function(uri) {
   uri <- normalizePath(uri, mustWork = TRUE)
   mdal_load_(uri)
@@ -91,11 +93,10 @@ mdal_load <- function(uri) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_face_count()], [mdal_mesh_edge_count()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_vertex_count(mesh)
-
 mdal_mesh_vertex_count <- function(mesh) {
   mdal_mesh_vertex_count_(mesh)
 }
@@ -110,11 +111,10 @@ mdal_mesh_vertex_count <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_vertex_count()], [mdal_mesh_edge_count()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_face_count(mesh)
-
 mdal_mesh_face_count <- function(mesh) {
   mdal_mesh_face_count_(mesh)
 }
@@ -131,11 +131,11 @@ mdal_mesh_face_count <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' # Mike21 mesh has CRS defined
+#' f <- system.file("extdata/MDAL/tests/data/mike21/small.mesh",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_projection(mesh)
-
 mdal_mesh_projection <- function(mesh) {
   mdal_mesh_projection_(mesh)
 }
@@ -151,11 +151,12 @@ mdal_mesh_projection <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_vertex_count()], [mdal_mesh_face_count()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' # Load a pure 1D mesh (lines only, no faces)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/lines.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_edge_count(mesh)
-
+#' mdal_mesh_face_count(mesh)  # No faces in 1D mesh
 mdal_mesh_edge_count <- function(mesh) {
   mdal_mesh_edge_count_(mesh)
 }
@@ -170,8 +171,9 @@ mdal_mesh_edge_count <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_drivers()]
 #' @examples
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_driver_name(mesh)
 mdal_mesh_driver_name <- function(mesh) {
   mdal_mesh_driver_name_(mesh)
@@ -188,11 +190,10 @@ mdal_mesh_driver_name <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()], [mdal_mesh_projection()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_extent(mesh)
-
 mdal_mesh_extent <- function(mesh) {
   mdal_mesh_extent_(mesh)
 }
@@ -208,11 +209,11 @@ mdal_mesh_extent <- function(mesh) {
 #' @export
 #' @seealso [mdal_load()]
 #' @examples
-
-#' mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-#' mesh <- mdal_load(mfile)
+#' # PLY file with multiple dataset groups
+#' f <- system.file("extdata/MDAL/tests/data/ply/all_features.ply",
+#'                  package = "rmdal", mustWork = TRUE)
+#' mesh <- mdal_load(f)
 #' mdal_mesh_dataset_group_count(mesh)
-
 mdal_mesh_dataset_group_count <- function(mesh) {
   mdal_mesh_dataset_group_count_(mesh)
 }

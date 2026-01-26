@@ -16,8 +16,9 @@ Character string with driver name (e.g., "2DM", "UGRID", "Selafin").
 Returns the name of the MDAL driver used to load the mesh.
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_driver_name(mesh)
 }
 \seealso{

@@ -26,9 +26,10 @@ to the MDAL mesh handle, which will be automatically closed when garbage
 collected.
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# Load a mesh with mixed triangles and quads
+f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_vertex_count(mesh)
 mdal_mesh_face_count(mesh)
-mdal_mesh_projection(mesh)
 }

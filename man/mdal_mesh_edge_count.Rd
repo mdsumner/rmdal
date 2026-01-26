@@ -17,9 +17,12 @@ Returns the number of edges in a loaded mesh. Edges are used for 1D mesh
 elements (e.g., river networks).
 }
 \examples{
-mfile <- system.file("extdata/dem_with_holes/tnz.adf", package = "rmdal", mustWork = TRUE)
-mesh <- mdal_load(mfile)
+# Load a pure 1D mesh (lines only, no faces)
+f <- system.file("extdata/MDAL/tests/data/2dm/lines.2dm",
+                 package = "rmdal", mustWork = TRUE)
+mesh <- mdal_load(f)
 mdal_mesh_edge_count(mesh)
+mdal_mesh_face_count(mesh)  # No faces in 1D mesh
 }
 \seealso{
 \code{\link[=mdal_load]{mdal_load()}}, \code{\link[=mdal_mesh_vertex_count]{mdal_mesh_vertex_count()}}, \code{\link[=mdal_mesh_face_count]{mdal_mesh_face_count()}}
