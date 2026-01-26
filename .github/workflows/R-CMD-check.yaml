@@ -32,15 +32,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install MDAL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          git clone https://github.com/lutraconsulting/MDAL.git
-          cd MDAL && mkdir build && cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make && sudo make install
-          sudo ldconfig
+      - name: Install MDAL (conda fallback)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          channels: conda-forge
+
+      - run: conda install -y mdal
 
       - uses: r-lib/actions/setup-pandoc@v2
 
