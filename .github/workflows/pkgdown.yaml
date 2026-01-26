@@ -1,5 +1,4 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# .github/workflows/pkgdown.yaml
 on:
   push:
     branches: [main, master]
@@ -15,7 +14,9 @@ permissions: read-all
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
-    # Only restrict concurrency for non-PR jobs
+    container:
+      image: ghcr.io/mdsumner/geospatial-r:r-gdalraster
+
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
@@ -25,36 +26,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install MDAL via conda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          channels: conda-forge
-          auto-activate-base: true
-
-      - name: Install MDAL and configure
-        shell: bash -el {0}
+      - name: Build and install MDAL
         run: |
-          conda install -y mdal
-          # Create Makevars directly, bypassing configure
-          mkdir -p src
-          echo "PKG_CPPFLAGS=-I$CONDA_PREFIX/include" > src/Makevars
-          echo "PKG_LIBS=-L$CONDA_PREFIX/lib -lmdal -Wl,-rpath,$CONDA_PREFIX/lib" >> src/Makevars
-          cat src/Makevars
+          git clone --depth 1 https://github.com/lutraconsulting/MDAL.git /tmp/MDAL
+          cd /tmp/MDAL
+          mkdir build && cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make -j$(nproc)
+          make install
+          ldconfig
+          # Verify
+          pkg-config --cflags --libs mdal || echo "pkg-config check"
+          ls /usr/local/include/mdal.h
 
-      - uses: r-lib/actions/setup-pandoc@v2
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages(c("pkgdown", "cpp11"), repos = "https://cloud.r-project.org")'
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::pkgdown, local::.
-          needs: website
+      - name: Install package
+        run: R CMD INSTALL .
 
       - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
-        shell: Rscript {0}
+        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
