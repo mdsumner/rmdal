@@ -28,6 +28,9 @@ jobs:
 
       - name: Build and install MDAL
         run: |
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt-get install cmake software-properties-common
           git clone --depth 1 https://github.com/lutraconsulting/MDAL.git /tmp/MDAL
           cd /tmp/MDAL
           mkdir build && cd build
