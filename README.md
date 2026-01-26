@@ -76,26 +76,26 @@ mdal_version()
 
 # List available drivers
 mdal_drivers()[, c("name", "long_name", "can_read_mesh")]
-#>                          name                  long_name can_read_mesh
-#> 1                       *.2dm                      *.2dm          TRUE
-#> 2                        \036                      *.tin          TRUE
-#> 3  *.slf;;*.ser;;*.geo;;*.res *.slf;;*.ser;;*.geo;;*.res          TRUE
-#> 4                       *.adf                      *.adf          TRUE
-#> 5                       *.ply                      *.ply          TRUE
-#> 6          *.nc;;*.DAT;;*.OUT         *.nc;;*.DAT;;*.OUT          TRUE
-#> 7                       *.hdf                      *.hdf          TRUE
-#> 8                        *.nc                       *.nc          TRUE
-#> 9                       *.sww                      *.sww          TRUE
-#> 10                       *.nc                       *.nc          TRUE
-#> 11             results_3di.nc             results_3di.nc          TRUE
-#> 12                       *.nc                       *.nc          TRUE
-#> 13            P\024\x8a`\x89U            P\024\x8a`\x89U          TRUE
-#> 14                     *.json                     *.json          TRUE
-#> 15                      *.dat                      *.dat         FALSE
-#> 16                      *.dat                      *.dat         FALSE
-#> 17               *.xmdf;;*.h5               *.xmdf;;*.h5          TRUE
-#> 18              *.xdmf;;*.xmf              *.xdmf;;*.xmf         FALSE
-#> 19                     *.mesh                     *.mesh          TRUE
+#>          name                    long_name can_read_mesh
+#> 1         2DM                2DM Mesh File          TRUE
+#> 2     XMS_TIN            XMS Tin Mesh File          TRUE
+#> 3     SELAFIN                 Selafin File          TRUE
+#> 4    ESRI_TIN                     Esri TIN          TRUE
+#> 5         PLY Stanford PLY Ascii Mesh File          TRUE
+#> 6       FLO2D                        Flo2D          TRUE
+#> 7       HEC2D                   HEC-RAS 2D          TRUE
+#> 8    TUFLOWFV                    TUFLOW FV          TRUE
+#> 9         SWW                        AnuGA          TRUE
+#> 10      Ugrid                        UGRID          TRUE
+#> 11        3Di                  3Di Results          TRUE
+#> 12     NETCDF                  GDAL NetCDF          TRUE
+#> 13       GRIB                    GDAL Grib          TRUE
+#> 14        H2I                H2i Mesh File          TRUE
+#> 15  ASCII_DAT                          DAT         FALSE
+#> 16 BINARY_DAT                   Binary DAT         FALSE
+#> 17       XMDF                  TUFLOW XMDF          TRUE
+#> 18       XDMF                         XDMF         FALSE
+#> 19     Mike21             Mike21 Mesh File          TRUE
 
 # Load a mesh (mixed triangles and quads)
 f <- system.file("extdata/MDAL/tests/data/2dm/quad_and_triangle.2dm",
