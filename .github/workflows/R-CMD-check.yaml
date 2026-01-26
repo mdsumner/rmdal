@@ -1,5 +1,4 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# .github/workflows/R-CMD-check.yaml
 on:
   push:
     branches: [main, master]
@@ -13,37 +12,35 @@ permissions: read-all
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mdsumner/geospatial-r:r-gdalraster
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install MDAL via conda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          channels: conda-forge
-          auto-activate-base: true
-
-      - name: Install MDAL and export paths
-        shell: bash -el {0}
+      - name: Build and install MDAL
         run: |
-          conda install -y mdal
-          echo "PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
-          echo "CPPFLAGS=-I$CONDA_PREFIX/include" >> $GITHUB_ENV
-          echo "LDFLAGS=-L$CONDA_PREFIX/lib" >> $GITHUB_ENV
-          echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+          apt-get  update
+          apt-get  upgrade -y
+          apt-get  install -y cmake software-properties-common
+          git clone --depth 1 https://github.com/lutraconsulting/MDAL.git /tmp/MDAL
+          cd /tmp/MDAL
+          mkdir build && cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make -j$(nproc)
+          make install
+          ldconfig
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
+      - name: Install dependencies
+        run: |
+          Rscript -e 'install.packages(c("rcmdcheck", "cpp11", "testthat"), repos = "https://cloud.r-project.org")'
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      - name: Check
+        run: |
+          Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")'
 
-      - uses: r-lib/actions/check-r-package@v2
-        with:
-          upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+
+
