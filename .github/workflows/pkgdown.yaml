@@ -31,17 +31,15 @@ jobs:
           channels: conda-forge
           auto-activate-base: true
 
-      - name: Install MDAL and export paths
+      - name: Install MDAL and configure
         shell: bash -el {0}
         run: |
-          conda install -y mdal pkg-config
-          echo "CONDA_PREFIX is: $CONDA_PREFIX"
-          echo "PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig" >> $GITHUB_ENV
-          echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-          # Verify MDAL is findable
-          export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig
-          pkg-config --cflags --libs mdal || echo "pkg-config can't find mdal"
-          ls $CONDA_PREFIX/include/mdal.h || echo "mdal.h not found"
+          conda install -y mdal
+          # Create Makevars directly, bypassing configure
+          mkdir -p src
+          echo "PKG_CPPFLAGS=-I$CONDA_PREFIX/include" > src/Makevars
+          echo "PKG_LIBS=-L$CONDA_PREFIX/lib -lmdal -Wl,-rpath,$CONDA_PREFIX/lib" >> src/Makevars
+          cat src/Makevars
 
       - uses: r-lib/actions/setup-pandoc@v2
 
