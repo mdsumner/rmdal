@@ -25,12 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-- name: Install MDAL
+      - name: Install MDAL via conda
         uses: conda-incubator/setup-miniconda@v3
         with:
           channels: conda-forge
+          auto-activate-base: true
 
-      - name: Install MDAL and set paths
+      - name: Install MDAL and export paths
         shell: bash -el {0}
         run: |
           conda install -y mdal
