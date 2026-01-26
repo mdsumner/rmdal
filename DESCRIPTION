@@ -1,6 +1,6 @@
 Package: rmdal
 Title: R Interface to the Mesh Data Abstraction Library (MDAL)
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Michael", "Sumner", 
            email = "mdsumner@gmail.com", 

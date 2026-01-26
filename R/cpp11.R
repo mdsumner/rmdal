@@ -16,6 +16,18 @@ mdal_drivers_ <- function() {
   .Call(`_rmdal_mdal_drivers_`)
 }
 
+mdal_mesh_vertices_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_vertices_`, mesh_xptr)
+}
+
+mdal_mesh_faces_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_faces_`, mesh_xptr)
+}
+
+mdal_mesh_edges_ <- function(mesh_xptr) {
+  .Call(`_rmdal_mdal_mesh_edges_`, mesh_xptr)
+}
+
 mdal_load_ <- function(uri) {
   .Call(`_rmdal_mdal_load_`, uri)
 }

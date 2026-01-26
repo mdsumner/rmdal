@@ -33,6 +33,27 @@ extern "C" SEXP _rmdal_mdal_drivers_() {
     return cpp11::as_sexp(mdal_drivers_());
   END_CPP11
 }
+// mdal_geometry.cpp
+doubles_matrix<> mdal_mesh_vertices_(sexp mesh_xptr);
+extern "C" SEXP _rmdal_mdal_mesh_vertices_(SEXP mesh_xptr) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_mesh_vertices_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
+  END_CPP11
+}
+// mdal_geometry.cpp
+list mdal_mesh_faces_(sexp mesh_xptr);
+extern "C" SEXP _rmdal_mdal_mesh_faces_(SEXP mesh_xptr) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_mesh_faces_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
+  END_CPP11
+}
+// mdal_geometry.cpp
+integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr);
+extern "C" SEXP _rmdal_mdal_mesh_edges_(SEXP mesh_xptr) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_mesh_edges_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
+  END_CPP11
+}
 // mdal_load.cpp
 sexp mdal_load_(std::string uri);
 extern "C" SEXP _rmdal_mdal_load_(SEXP uri) {
@@ -99,10 +120,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rmdal_mdal_mesh_dataset_group_count_", (DL_FUNC) &_rmdal_mdal_mesh_dataset_group_count_, 1},
     {"_rmdal_mdal_mesh_driver_name_",         (DL_FUNC) &_rmdal_mdal_mesh_driver_name_,         1},
     {"_rmdal_mdal_mesh_edge_count_",          (DL_FUNC) &_rmdal_mdal_mesh_edge_count_,          1},
+    {"_rmdal_mdal_mesh_edges_",               (DL_FUNC) &_rmdal_mdal_mesh_edges_,               1},
     {"_rmdal_mdal_mesh_extent_",              (DL_FUNC) &_rmdal_mdal_mesh_extent_,              1},
     {"_rmdal_mdal_mesh_face_count_",          (DL_FUNC) &_rmdal_mdal_mesh_face_count_,          1},
+    {"_rmdal_mdal_mesh_faces_",               (DL_FUNC) &_rmdal_mdal_mesh_faces_,               1},
     {"_rmdal_mdal_mesh_projection_",          (DL_FUNC) &_rmdal_mdal_mesh_projection_,          1},
     {"_rmdal_mdal_mesh_vertex_count_",        (DL_FUNC) &_rmdal_mdal_mesh_vertex_count_,        1},
+    {"_rmdal_mdal_mesh_vertices_",            (DL_FUNC) &_rmdal_mdal_mesh_vertices_,            1},
     {"_rmdal_mdal_version_",                  (DL_FUNC) &_rmdal_mdal_version_,                  0},
     {NULL, NULL, 0}
 };

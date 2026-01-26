@@ -1,10 +1,24 @@
-# rmdal (development version)
-
-## rmdal 0.0.0.9000
+# rmdal 0.1.0
 
 Initial development release with core MDAL bindings.
 
 ### New features
+
+* `mdal_mesh_vertices()` returns all vertex coordinates as an Nx3 matrix.
+
+* `mdal_mesh_faces()` returns face definitions as a list of vertex index vectors.
+  Supports varying face sizes (triangles, quads, n-gons).
+
+* `mdal_mesh_edges()` returns 1D edge elements as an Nx2 matrix of vertex indices.
+
+* `mdal_as_mesh3d()
+` converts MDAL meshes to rgl-compatible mesh3d objects:
+  
+
+  - `type = "wire"` (default) creates wireframe from face boundaries. Works for 
+    any topology including mixed faces and n-gons.
+  - `type = "solid"` creates filled mesh for pure triangle or quad meshes.
+  - No rgl dependency required - creates the list structure directly.
 
 * `mdal_version()` returns the version of the linked MDAL library.
 
@@ -13,7 +27,6 @@ Initial development release with core MDAL bindings.
 
 * `mdal_load()` loads a mesh file and returns an external pointer to the 
   MDAL mesh handle. Supports driver hints via URI syntax (e.g., 
-
   `'Ugrid:"file.nc":mesh2d'`).
 
 * `mdal_mesh_vertex_count()` returns the number of vertices in a mesh.
@@ -31,6 +44,14 @@ Initial development release with core MDAL bindings.
 * `mdal_mesh_dataset_group_count()` returns the number of dataset groups in a mesh.
 
 * `mdal_last_status()` returns the status code from the last MDAL operation.
+
+### Test data
+
+* Package includes minimal MDAL test files (~25 KB) covering:
+  - Mixed triangle/quad meshes, pure 1D edges, hexagonal faces
+  - Multiple drivers: 2DM, Mike21, PLY, UGRID, ESRI TIN
+  - Directory-based formats (ESRI TIN)
+  - Files with CRS and multiple dataset groups
 
 ### Infrastructure
 
