@@ -36,7 +36,7 @@ jobs:
           rm -f /etc/apt/sources.list.d/*arrow*
           apt-get update
           apt-get upgrade -y
-          apt-get install -y cmake software-properties-common libhdf5-dev libnetcdf-dev libxml2-dev libsqlite3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libwebp-dev libfontconfig1-dev
+          apt-get install -y cmake software-properties-common libhdf5-dev libnetcdf-dev libxml2-dev libsqlite3-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev libwebp-dev libfontconfig1-dev pandoc
           git clone --depth 1 https://github.com/lutraconsulting/MDAL.git /tmp/MDAL
           cd /tmp/MDAL
           mkdir build && cd build
