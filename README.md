@@ -162,10 +162,15 @@ rmdal is under active development.
 
 - [x] Vertex, face, and edge geometry extraction
 - [x] Conversion to rgl mesh3d format (wireframe and solid)
+- [x] Dataset group and dataset access (temporal data):
+  `mdal_mesh_dataset_group_count()`, `mdal_dataset_group_name()`,
+  `mdal_dataset_group_location()`, `mdal_dataset_group_is_scalar()`,
+  `mdal_dataset_group_dataset_count()`, `mdal_dataset_time()`,
+  `mdal_dataset_values()` (`mdal_dataset_group_is_scalar()` needs the
+  native-routine registration fix in PR #1)
 
 ### Planned
 
-- [ ] Dataset group and dataset access (temporal data)
 - [ ] Dataset values to mesh3d colors
 - [ ] S7 classes for mesh objects
 - [ ] Integration with wk for geometry interchange
@@ -177,18 +182,31 @@ MDAL provides access to unstructured mesh data with the following
 hierarchy:
 
     Mesh
-    ├── Vertices (x, y, z coordinates)
-    ├── Faces (polygons defined by vertex indices)
-    ├── Edges (1D elements for network meshes)
-    └── Dataset Groups (e.g., "Depth", "Velocity")
-        └── Datasets (values at specific times)
-            └── Values (scalar or vector, on vertices/faces/volumes)
+    |-- Vertices (x, y, z coordinates)
+    |-- Faces (polygons defined by vertex indices)
+    |-- Edges (1D elements for network meshes)
+    `-- Dataset Groups (e.g., "Depth", "Velocity")
+        `-- Datasets (values at specific times)
+            `-- Values (scalar or vector, on vertices/faces/volumes)
 
 Fidelity note: MDAL’s data model is richer than what simple features
 (sf) can represent. Converting to sf necessarily loses information like
 temporal datasets, 3D volumes, and the vertex-index topology. rmdal aims
 to preserve MDAL’s native model internally and provide targeted
 conversions for interoperability.
+
+## Known limitations
+
+These come from MDAL itself and were found joining MDAL topology to GDAL
+multidimensional arrays on UGRID files:
+
+- For 2D UGRID meshes MDAL loads no edges (`mdal_mesh_edge_count()` is
+  0 even when the file stores `edge_node_connectivity`), so arrays on
+  the edge dimension have no topology to bind to. Read the edge
+  connectivity from the file directly when you need it.
+- When no mesh driver claims a netCDF file, MDAL can fall back to the
+  GDAL netCDF raster driver and return a grid that is not the file's
+  mesh. Check `mdal_mesh_driver_name()`.
 
 ## Related Projects
 
