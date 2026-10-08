@@ -34,7 +34,7 @@ extern "C" SEXP _rmdal_mdal_drivers_() {
   END_CPP11
 }
 // mdal_geometry.cpp
-doubles_matrix<> mdal_mesh_vertices_(sexp mesh_xptr);
+sexp mdal_mesh_vertices_(sexp mesh_xptr);
 extern "C" SEXP _rmdal_mdal_mesh_vertices_(SEXP mesh_xptr) {
   BEGIN_CPP11
     return cpp11::as_sexp(mdal_mesh_vertices_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
@@ -48,7 +48,7 @@ extern "C" SEXP _rmdal_mdal_mesh_faces_(SEXP mesh_xptr) {
   END_CPP11
 }
 // mdal_geometry.cpp
-integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr);
+sexp mdal_mesh_edges_(sexp mesh_xptr);
 extern "C" SEXP _rmdal_mdal_mesh_edges_(SEXP mesh_xptr) {
   BEGIN_CPP11
     return cpp11::as_sexp(mdal_mesh_edges_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
