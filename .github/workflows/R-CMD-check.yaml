@@ -50,7 +50,8 @@ jobs:
             # older R; rebuild everything these depend on so they load
             deps <- tools::package_dependencies(pkgs, db = available.packages(repos = repos), recursive = TRUE)
             base <- rownames(installed.packages(priority = "base"))
-            install.packages(setdiff(unique(c(pkgs, unlist(deps))), base), repos = repos)'
+            install.packages(setdiff(unique(c(pkgs, unlist(deps))), base), repos = repos)
+            for (p in pkgs) loadNamespace(p)'
 
       - name: Check
         run: |
