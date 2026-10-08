@@ -30,7 +30,9 @@ jobs:
           rm -f /etc/apt/sources.list.d/*arrow*
           apt-get  update
           apt-get  upgrade -y
-          apt-get  install -y cmake software-properties-common libhdf5-dev libnetcdf-dev libxml2-dev libsqlite3-dev
+          apt-get  install -y cmake software-properties-common libhdf5-dev libnetcdf-dev libxml2-dev libsqlite3-dev locales pandoc
+          apt-get  install -y --no-install-recommends devscripts
+          locale-gen en_US.UTF-8
           git clone --depth 1 https://github.com/lutraconsulting/MDAL.git /tmp/MDAL
           cd /tmp/MDAL
           mkdir build && cd build
@@ -41,7 +43,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          Rscript -e 'install.packages(c("rcmdcheck", "cpp11", "testthat"), repos = "https://cloud.r-project.org")'
+          Rscript -e '
+            repos <- "https://cloud.r-project.org"
+            pkgs <- c("rcmdcheck", "cpp11", "testthat")
+            # the image has compiled packages (rlang at least) built against an
+            # older R; rebuild everything these depend on so they load
+            deps <- tools::package_dependencies(pkgs, db = available.packages(repos = repos), recursive = TRUE)
+            base <- rownames(installed.packages(priority = "base"))
+            install.packages(setdiff(unique(c(pkgs, unlist(deps))), base), repos = repos)'
 
       - name: Check
         run: |
