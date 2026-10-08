@@ -34,7 +34,7 @@ extern "C" SEXP _rmdal_mdal_drivers_() {
   END_CPP11
 }
 // mdal_geometry.cpp
-doubles_matrix<> mdal_mesh_vertices_(sexp mesh_xptr);
+sexp mdal_mesh_vertices_(sexp mesh_xptr);
 extern "C" SEXP _rmdal_mdal_mesh_vertices_(SEXP mesh_xptr) {
   BEGIN_CPP11
     return cpp11::as_sexp(mdal_mesh_vertices_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
@@ -48,7 +48,7 @@ extern "C" SEXP _rmdal_mdal_mesh_faces_(SEXP mesh_xptr) {
   END_CPP11
 }
 // mdal_geometry.cpp
-integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr);
+sexp mdal_mesh_edges_(sexp mesh_xptr);
 extern "C" SEXP _rmdal_mdal_mesh_edges_(SEXP mesh_xptr) {
   BEGIN_CPP11
     return cpp11::as_sexp(mdal_mesh_edges_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr)));
@@ -145,10 +145,18 @@ extern "C" SEXP _rmdal_mdal_dataset_time_(SEXP mesh_xptr, SEXP group_index, SEXP
     return cpp11::as_sexp(mdal_dataset_time_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index), cpp11::as_cpp<cpp11::decay_t<int>>(dataset_index)));
   END_CPP11
 }
+// mdal_load.cpp
+bool mdal_dataset_group_is_scalar_(sexp mesh_xptr, int group_index);
+extern "C" SEXP _rmdal_mdal_dataset_group_is_scalar_(SEXP mesh_xptr, SEXP group_index) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(mdal_dataset_group_is_scalar_(cpp11::as_cpp<cpp11::decay_t<sexp>>(mesh_xptr), cpp11::as_cpp<cpp11::decay_t<int>>(group_index)));
+  END_CPP11
+}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_rmdal_mdal_dataset_group_dataset_count_", (DL_FUNC) &_rmdal_mdal_dataset_group_dataset_count_, 2},
+    {"_rmdal_mdal_dataset_group_is_scalar_",     (DL_FUNC) &_rmdal_mdal_dataset_group_is_scalar_,     2},
     {"_rmdal_mdal_dataset_group_location_",      (DL_FUNC) &_rmdal_mdal_dataset_group_location_,      2},
     {"_rmdal_mdal_dataset_group_name_",          (DL_FUNC) &_rmdal_mdal_dataset_group_name_,          2},
     {"_rmdal_mdal_dataset_time_",                (DL_FUNC) &_rmdal_mdal_dataset_time_,                3},

@@ -79,3 +79,7 @@ mdal_dataset_values_ <- function(mesh_xptr, group_index, dataset_index) {
 mdal_dataset_time_ <- function(mesh_xptr, group_index, dataset_index) {
   .Call(`_rmdal_mdal_dataset_time_`, mesh_xptr, group_index, dataset_index)
 }
+
+mdal_dataset_group_is_scalar_ <- function(mesh_xptr, group_index) {
+  .Call(`_rmdal_mdal_dataset_group_is_scalar_`, mesh_xptr, group_index)
+}

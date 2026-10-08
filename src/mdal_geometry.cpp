@@ -1,13 +1,26 @@
+#include <vector>
 #include <cpp11.hpp>
 #include <mdal.h>
 
 using namespace cpp11;
 
+// Matrix attributes set on a cpp11 writable matrix are dropped when it is
+// converted to SEXP, so convert first and set dimnames on the result.
+static sexp with_colnames(SEXP x, std::initializer_list<const char*> names) {
+  sexp out(x);
+  writable::strings cn(names.size());
+  R_xlen_t i = 0;
+  for (const char* nm : names) cn[i++] = nm;
+  writable::list dn({R_NilValue, cn});
+  Rf_setAttrib(out, R_DimNamesSymbol, dn);
+  return out;
+}
+
 // Forward declaration of release function from mdal_load.cpp
 void mdal_mesh_release(void* mesh);
 
 [[cpp11::register]]
-doubles_matrix<> mdal_mesh_vertices_(sexp mesh_xptr) {
+sexp mdal_mesh_vertices_(sexp mesh_xptr) {
   auto ptr = as_cpp<external_pointer<void, mdal_mesh_release>>(mesh_xptr);
   MDAL_MeshH mesh = static_cast<MDAL_MeshH>(ptr.get());
 
@@ -40,12 +53,7 @@ doubles_matrix<> mdal_mesh_vertices_(sexp mesh_xptr) {
   }
 
   // Set column names
-  result.attr("dimnames") = writable::list({
-    R_NilValue,
-    writable::strings({"x", "y", "z"})
-  });
-
-  return result;
+  return with_colnames(result, {"x", "y", "z"});
 }
 
 [[cpp11::register]]
@@ -105,7 +113,7 @@ list mdal_mesh_faces_(sexp mesh_xptr) {
 }
 
 [[cpp11::register]]
-integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr) {
+sexp mdal_mesh_edges_(sexp mesh_xptr) {
   auto ptr = as_cpp<external_pointer<void, mdal_mesh_release>>(mesh_xptr);
   MDAL_MeshH mesh = static_cast<MDAL_MeshH>(ptr.get());
 
@@ -115,11 +123,7 @@ integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr) {
   writable::integers_matrix<> result(ne, 2);
 
   if (ne == 0) {
-    result.attr("dimnames") = writable::list({
-      R_NilValue,
-      writable::strings({"start", "end"})
-    });
-    return result;
+    return with_colnames(result, {"start", "end"});
   }
 
   // Get edge iterator
@@ -146,10 +150,5 @@ integers_matrix<> mdal_mesh_edges_(sexp mesh_xptr) {
     result(i, 1) = endIndices[i] + 1;
   }
 
-  result.attr("dimnames") = writable::list({
-    R_NilValue,
-    writable::strings({"start", "end"})
-  });
-
-  return result;
+  return with_colnames(result, {"start", "end"});
 }
