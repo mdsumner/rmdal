@@ -26,6 +26,8 @@ jobs:
 
       - name: Build and install MDAL
         run: |
+          # the image ships an Arrow apt source whose signing key is missing
+          rm -f /etc/apt/sources.list.d/*arrow*
           apt-get  update
           apt-get  upgrade -y
           apt-get  install -y cmake software-properties-common
