@@ -1,3 +1,4 @@
+#include <vector>
 #include <cpp11.hpp>
 #include <mdal.h>
 

@@ -98,6 +98,18 @@ test_that("load PLY mesh with multiple dataset groups", {
   expect_gt(mdal_mesh_dataset_group_count(mesh), 5)
 })
 
+test_that("mdal_dataset_group_is_scalar distinguishes scalar and vector groups", {
+  mesh <- mdal_load(test_file("ply/all_features.ply"))
+  n <- mdal_mesh_dataset_group_count(mesh)
+  grp <- seq_len(n) - 1L
+  nms <- vapply(grp, function(g) mdal_dataset_group_name(mesh, g), "")
+  scalar <- vapply(grp, function(g) mdal_dataset_group_is_scalar(mesh, g), TRUE)
+
+  expect_true(scalar[nms == "Bed Elevation"])
+  expect_false(scalar[nms == "vertex_vector"])
+  expect_false(scalar[nms == "face_vector"])
+})
+
 test_that("load UGRID NetCDF mesh", {
   mesh <- mdal_load(test_file("ugrid/time_integer/simple_time_integer.nc"))
 
