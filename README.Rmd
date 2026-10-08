@@ -137,8 +137,7 @@ rmdal is under active development.
   `mdal_mesh_dataset_group_count()`, `mdal_dataset_group_name()`,
   `mdal_dataset_group_location()`, `mdal_dataset_group_is_scalar()`,
   `mdal_dataset_group_dataset_count()`, `mdal_dataset_time()`,
-  `mdal_dataset_values()` (`mdal_dataset_group_is_scalar()` needs the
-  native-routine registration fix in PR #1)
+  `mdal_dataset_values()`
 
 ### Planned
 
